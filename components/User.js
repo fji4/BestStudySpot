@@ -93,7 +93,7 @@ export default class User extends Component {
                             <Icon name="comment" size={30}/>
                             <Text style={{fontSize: 10}}>Recommend</Text>
                         </Button>
-                        <Button vertical onPress={() => Actions.replace("comment")}>
+                        <Button vertical onPress={() => Actions.comment()}>
                             <Icon active name="add-circle-outline" size={30}/>
                         </Button>
                         <Button vertical active>
