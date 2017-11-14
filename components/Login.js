@@ -32,9 +32,13 @@ import  {
 
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * The login page
+ */
 export default class Login extends Component {
 
-    render() {return(
+    render() {
+        return(
 
         <Image style={styles.background} source={require('../assets/grainger.png')}>
 
@@ -69,6 +73,9 @@ export default class Login extends Component {
     )}
 }
 
+/**
+ * Style sheet for font and position of the UI layout
+ */
 const styles = StyleSheet.create({
     centralize: {
         paddingTop: 10,

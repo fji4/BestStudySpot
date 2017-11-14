@@ -6,7 +6,7 @@ import {WebView} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 /**
- * Render the web page of the repositories inside the app by pass the props
+ * Render the web page of the libraries inside the app by pass the props
  */
 export default class Webview extends Component {
     constructor(props, context) {

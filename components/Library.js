@@ -36,7 +36,9 @@ import  {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
-
+/**
+ * Individual library Card Item
+ */
 class LibraryListItem extends Component {
     constructor(props) {
         super(props);
@@ -48,6 +50,9 @@ class LibraryListItem extends Component {
     }
 
 
+    /**
+     * Call each library api to get the library detail information
+     */
 
     get_library() {
         axios.get(this.props.library['unit_json'])
@@ -87,7 +92,7 @@ class LibraryListItem extends Component {
 }
 
 /**
- * Render the whole list of the followers
+ * Render the whole list of the libraries
  * @param props
  * @returns {XML}
  * @constructor
@@ -110,8 +115,9 @@ const LibraryList = props => {
 };
 
 
-
-
+/**
+ * The library page
+ */
 export default class Library extends Component {
     constructor(props, context) {
         super(props, context);
@@ -123,7 +129,7 @@ export default class Library extends Component {
     }
 
     /**
-     * Call library api to get all the user information and store them to a dic.
+     * Call library api to get all the library information and store them to a dic.
      */
 
     getAuthInformation() {

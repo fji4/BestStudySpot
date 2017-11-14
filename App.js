@@ -15,6 +15,9 @@ import Recommend from './components/Recommend';
 import User from './components/User';
 import Webview from './components/Webview';
 
+/**
+ * The Navigation setup for the whole app.
+ */
 export default class App extends React.Component {
   render() {
     return (

@@ -31,6 +31,9 @@ import  {
 
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * The registration page
+ */
 export default class Register extends Component {
 
     render() {

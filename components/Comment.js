@@ -31,6 +31,9 @@ import  {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * The add comment page
+ */
 export default class Comment extends Component {
     render() {
         return(

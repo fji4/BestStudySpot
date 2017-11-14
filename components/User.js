@@ -31,6 +31,9 @@ import  {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * The user page
+ */
 export default class User extends Component {
     constructor(props, context) {
         super(props, context);

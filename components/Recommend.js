@@ -31,6 +31,9 @@ import  {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
+/**
+ * The recommendation page
+ */
 export default class Recommend extends Component {
     render() {
         return(
