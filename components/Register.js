@@ -28,13 +28,36 @@ import  {
     Label,
     Input
 } from 'native-base';
-
+import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 
 /**
  * The registration page
  */
 export default class Register extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            email: "",
+            password: "",
+            username: ""
+        };
+    }
+
+    signInButton() {
+        const {email, password, username} = this.state;
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(function () {
+                const {currentUser} = firebase.auth();
+                console.log(currentUser.uid);
+                firebase.database().ref(`users/${currentUser.uid}`)
+                    .set({email, password, username});
+                Actions.replace("library",{userid:currentUser.uid});
+            });
+
+    }
 
     render() {
         return(
@@ -46,24 +69,20 @@ export default class Register extends Component {
             <Form style={styles.centralize}>
                 <Item inlinedLabel>
                     <Label>Username</Label>
-                    <Input />
+                    <Input value={this.state.username} onChangeText={username => this.setState({username})}/>
                 </Item>
                 <Item inlinedLabel>
                     <Label>Email</Label>
-                    <Input />
-                </Item>
-                <Item inlinedLabel>
-                    <Label>Password</Label>
-                    <Input />
+                    <Input value={this.state.email} onChangeText={email => this.setState({email})} />
                 </Item>
                 <Item inlinedLabel last>
-                    <Label>Re-enter password</Label>
-                    <Input />
+                    <Label>Password</Label>
+                    <Input value={this.state.password} onChangeText={password => this.setState({password})}/>
                 </Item>
             </Form>
 
             <View style={{paddingTop: 50}}>
-                <Button block info onPress={() => Actions.replace("library")}>
+                <Button block info onPress={() => this.signInButton()}>
                     <Text> Register </Text>
                 </Button>
 

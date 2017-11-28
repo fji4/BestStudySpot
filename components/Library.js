@@ -57,7 +57,7 @@ class LibraryListItem extends Component {
     get_library() {
         axios.get(this.props.library['unit_json'])
             .then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 this.setState({
                     library:response.data[0]
                 });

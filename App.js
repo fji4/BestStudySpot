@@ -7,6 +7,8 @@ import {
     Stack
 } from 'react-native-router-flux';
 
+import firebase from 'firebase';
+
 import Login from './components/Login';
 import Register from './components/Register';
 import Library from './components/Library';
@@ -19,6 +21,16 @@ import Webview from './components/Webview';
  * The Navigation setup for the whole app.
  */
 export default class App extends React.Component {
+    componentWillMount() {
+        firebase.initializeApp({
+            apiKey: 'AIzaSyCThMsvn3SlasnipSJ_byYiZlaWPmF5Wto',
+            authDomain: 'best-study-spot.firebaseapp.com',
+            databaseURL: 'https://best-study-spot.firebaseio.com',
+            projectId: 'best-study-spot',
+            storageBucket: 'best-study-spot.appspot.com',
+            messagingSenderId: '778414789573'
+        });
+    }
   render() {
     return (
         <Router sceneStyle={{paddingTop:5, paddingRight:5}}>

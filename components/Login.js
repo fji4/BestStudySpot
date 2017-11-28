@@ -29,13 +29,36 @@ import  {
     Label,
     Input
 } from 'native-base';
-
+import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 
 /**
  * The login page
  */
 export default class Login extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            email: "",
+            password: "",
+            error: ""
+        };
+    }
+
+    signInButton() {
+        const {email, password} = this.state;
+
+        this.setState({error: ""});
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .catch(() => {
+                this.setState({error: "Wrong password or username!"});
+            });
+
+        Actions.replace("library")
+    }
+
+
 
     render() {
         return(
@@ -47,16 +70,16 @@ export default class Login extends Component {
                 <Form style={styles.centralize}>
                     <Item inlinedLabel bordered>
                         <Label>Email</Label>
-                        <Input />
+                        <Input value={this.state.email} onChangeText={email => this.setState({email})} />
                     </Item>
                     <Item inlinedLabel last>
                         <Label>Password</Label>
-                        <Input />
+                        <Input value={this.state.password} onChangeText={password => this.setState({password})}/>
                     </Item>
                 </Form>
-
+            <Text  style={styles.errorTextStyle}>{this.state.error}</Text>
             <View style={{paddingTop: 50}}>
-                    <Button block info onPress={() => Actions.replace("library")}>
+                    <Button block info onPress={() => this.signInButton()}>
                         <Text> Sign In </Text>
                     </Button>
 
@@ -99,5 +122,10 @@ const styles = StyleSheet.create({
     },
     registerColor: {
         color: '#4f59fb'
+    },
+    errorTextStyle: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: '#ff0000'
     }
 });

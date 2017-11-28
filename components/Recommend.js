@@ -5,7 +5,8 @@ import {
     StyleSheet,
     NavigatorIOS,
     View,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 import  {
     Container,
@@ -25,20 +26,129 @@ import  {
     Form,
     Item,
     Label,
-    Input
+    Input,
+    Card,
+    CardItem,
+    Body
 } from 'native-base';
-
+import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
+
+
+
+/**
+ * Individual library Card Item
+ */
+class RecommendListItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: this.props.recommend}
+        ;
+        console.log("recommend "+this.props.recommend.comment);
+        // this.getPost=this.getPost.bind(this);
+        // this.getPost(this.props.recommend);
+    }
+
+
+    /**
+     * Call each library api to get the library detail information
+     */
+    // componentDidMount() {
+    //     this.setState({posts:this.props.recommend})
+    // }
+
+
+    render() {
+        return(
+            <Card style={{flex: 0}} >
+
+
+                <CardItem>
+                    <Body>
+                    <Text style={{fontSize: 20}}>{this.state.posts['place']}</Text>
+                    <Text>{this.state.posts['comment']}</Text>
+                    </Body>
+                </CardItem>
+                <CardItem>
+                    <Left>
+                        <Button transparent>
+                            <Icon active name="thumb-up" />
+                            <Text>Likes</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Button transparent>
+                        <Icon active name="chat-bubble" />
+                        <Text>Comments</Text>
+                    </Button>
+                    </Body>
+                    <Right>
+                        <Text>11h ago</Text>
+                    </Right>
+                </CardItem>
+            </Card>
+        )
+    }
+}
+
+/**
+ * Render the whole list of the libraries
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
+const RecommendList = props => {
+    const RecommendItems = props.recommends.map(recommend => {
+        return (
+            <RecommendListItem
+                key = {recommend['user']}
+                recommend={recommend}
+            />
+        );
+    });
+
+    return (
+        <ScrollView>
+            {RecommendItems}
+        </ScrollView>
+    );
+};
+
+
+
+
 
 /**
  * The recommendation page
  */
 export default class Recommend extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            recommends:[]
+        };
+        // this.getPost=this.getPost.bind(this);
+        this.getPost();
+    }
+
+    getPost() {
+        firebase.database().ref(`posts/`)
+            .on('value', function(snapshot) {
+                var id=[];
+                for (var i in snapshot.val()){
+                    id.push(snapshot.val()[i]);
+                }
+                this.setState({recommends:id});
+                console.log(this.state.recommends);
+            }.bind(this));
+    }
+
     render() {
         return(
             <Container>
-                <Content />
+                <RecommendList recommends={this.state.recommends} />
                 <Footer>
                     <FooterTab>
                         <Button vertical onPress={() => Actions.replace("library")}>
