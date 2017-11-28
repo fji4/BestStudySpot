@@ -45,6 +45,9 @@ export default class Register extends Component {
         };
     }
 
+    /**
+     * firebase register auth
+     */
     signInButton() {
         const {email, password, username} = this.state;
 

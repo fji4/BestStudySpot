@@ -38,7 +38,7 @@ import {Actions} from 'react-native-router-flux';
 
 
 /**
- * Individual library Card Item
+ * One post Item
  */
 class RecommendListItem extends Component {
     constructor(props) {
@@ -47,17 +47,16 @@ class RecommendListItem extends Component {
             posts: this.props.recommend}
         ;
         console.log("recommend "+this.props.recommend.comment);
-        // this.getPost=this.getPost.bind(this);
-        // this.getPost(this.props.recommend);
+
     }
 
 
     /**
-     * Call each library api to get the library detail information
+     * set state for posts
      */
-    // componentDidMount() {
-    //     this.setState({posts:this.props.recommend})
-    // }
+    componentDidMount() {
+        this.setState({posts:this.props.recommend})
+    }
 
 
     render() {
@@ -94,7 +93,7 @@ class RecommendListItem extends Component {
 }
 
 /**
- * Render the whole list of the libraries
+ * Render the whole list of the posts
  * @param props
  * @returns {XML}
  * @constructor
@@ -133,6 +132,9 @@ export default class Recommend extends Component {
         this.getPost();
     }
 
+    /**
+     * Get the data in database
+     */
     getPost() {
         firebase.database().ref(`posts/`)
             .on('value', function(snapshot) {

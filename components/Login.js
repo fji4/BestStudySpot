@@ -45,17 +45,24 @@ export default class Login extends Component {
         };
     }
 
+    /**
+     * firebase sign in auth
+     */
+
     signInButton() {
         const {email, password} = this.state;
 
         this.setState({error: ""});
 
         firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                Actions.replace("library");
+            })
             .catch(() => {
                 this.setState({error: "Wrong password or username!"});
             });
 
-        Actions.replace("library")
+
     }
 
 

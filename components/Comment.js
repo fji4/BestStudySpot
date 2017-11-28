@@ -47,6 +47,9 @@ export default class Comment extends Component {
         };
     }
 
+    /**
+     * add posts to the database
+     */
     addPost() {
 
 
