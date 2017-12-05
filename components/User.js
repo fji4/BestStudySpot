@@ -30,6 +30,7 @@ import  {
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
+// import PhotoUpload from 'react-native-photo-upload'
 
 /**
  * The user page
@@ -42,10 +43,11 @@ export default class User extends Component {
                 avatar_url: "https://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/52235f06e4b0bf0a6aa8425d/1378105582329/tom-hiddleston-talks-loki-in-thor-the-dark-world-and-beyond-preview.jpg",
                 name:"",
                 favorite: 2,
-                recommended: 2
+                recommended: 2,
+            avatarSource:''
 
         };
-        this.userInfo();
+        // this.userInfo();
     }
 
     signOut() {
@@ -54,7 +56,7 @@ export default class User extends Component {
 
     }
 
-    userInfo() {
+    componentDidMount() {
         const {currentUser} = firebase.auth();
         firebase.database().ref(`users/${currentUser.uid}`)
             .on('value', function(snapshot) {
@@ -64,6 +66,31 @@ export default class User extends Component {
             console.log(this.state.name);
 
         }.bind(this));
+    }
+
+    uploadPhoto() {
+        return (
+            <PhotoUpload
+                onPhotoSelect={avatar => {
+     if (avatar) {
+       console.log('Image base64 string: ', avatar)
+     }
+   }}
+            >
+                <Image
+                    style={{
+       paddingVertical: 30,
+       width: 150,
+       height: 150,
+       borderRadius: 75
+     }}
+                    resizeMode='cover'
+                    source={{
+       uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
+     }}
+                />
+            </PhotoUpload>
+        )
     }
 
     render() {
@@ -104,7 +131,11 @@ export default class User extends Component {
                     <View style={{paddingTop: 50}}>
                     <Button block info onPress={() => this.signOut()}>
                         <Text> Sign Out </Text>
-                    </Button></View>
+                    </Button>
+                    </View>
+
+                    {/*{this.uploadPhoto()}*/}
+
                 </Content>
                 <Footer>
                     <FooterTab>

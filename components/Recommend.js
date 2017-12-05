@@ -44,18 +44,76 @@ class RecommendListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: this.props.recommend}
-        ;
+            id: this.props.recommend,
+            posts: {},
+            comment: "",
+            toggle: false
+        };
         console.log("recommend "+this.props.recommend.comment);
-
     }
 
 
     /**
      * set state for posts
      */
+
     componentDidMount() {
-        this.setState({posts:this.props.recommend})
+        firebase.database().ref(`posts/${this.state.id}`)
+            .on('value', function(snapshot) {
+                this.setState({posts:snapshot.val()});
+            }.bind(this));
+    }
+
+    updateNewLikes() {
+        // A post entry.
+        var postData = {
+            user: this.state.posts['user'],
+            comment: this.state.posts['comment'],
+            place: this.state.posts['place'],
+            likes: this.state.posts['likes'] + 1
+        };
+
+        // Get a key for a new Post.
+
+        // Write the new post's data simultaneously in the posts list and the user's post list.
+        var updates = {};
+        updates['/posts/' + this.state.id] = postData;
+
+        firebase.database().ref().update(updates);
+    }
+
+    updateComment() {
+        const {comment} = this.state;
+        const {currentUser} = firebase.auth()
+        firebase.database().ref(`posts/${this.state.id}/subComment`)
+            .push({comment, currentUser});
+
+        this.toggleComment();
+    }
+
+    addComment() {
+        if (this.state.toggle) {
+            return (
+                <CardItem>
+
+                    <Input placeholder="Comments" autoFocus={true} value={this.state.comment} onChangeText={comment => this.setState({comment})}/>
+                    <Button transparent onPress={() => this.updateComment()}>
+                        <Icon active name="keyboard-arrow-right" />
+                    </Button>
+                </CardItem>
+            )
+        }
+        else{
+            return (
+                <View>
+
+                </View>
+            )
+        }
+    }
+
+    toggleComment() {
+        this.setState({toggle: !this.state.toggle})
     }
 
 
@@ -65,28 +123,26 @@ class RecommendListItem extends Component {
 
 
                 <CardItem>
-                    <Body>
+                    <Body ref="myRef">
                     <Text style={{fontSize: 20}}>{this.state.posts['place']}</Text>
                     <Text>{this.state.posts['comment']}</Text>
                     </Body>
                 </CardItem>
                 <CardItem>
                     <Left>
-                        <Button transparent>
+                        <Button transparent onPress={() => this.updateNewLikes()}>
                             <Icon active name="thumb-up" />
-                            <Text>Likes</Text>
+                            <Text>{this.state.posts['likes']} Likes</Text>
                         </Button>
                     </Left>
                     <Body>
-                    <Button transparent>
+                    <Button transparent onPress={() => this.toggleComment()}>
                         <Icon active name="chat-bubble" />
                         <Text>Comments</Text>
                     </Button>
                     </Body>
-                    <Right>
-                        <Text>11h ago</Text>
-                    </Right>
                 </CardItem>
+                {this.addComment()}
             </Card>
         )
     }
@@ -129,19 +185,22 @@ export default class Recommend extends Component {
             recommends:[]
         };
         // this.getPost=this.getPost.bind(this);
-        this.getPost();
+        // this.getPost();
     }
 
     /**
      * Get the data in database
      */
-    getPost() {
+    componentDidMount() {
         firebase.database().ref(`posts/`)
             .on('value', function(snapshot) {
                 var id=[];
-                for (var i in snapshot.val()){
-                    id.push(snapshot.val()[i]);
-                }
+                snapshot.forEach(function(childSnapshot) {
+                    id.push(childSnapshot.key)
+                });
+                // for (var i in snapshot.val()){
+                //     id.push(snapshot.val()[i]);
+                // }
                 this.setState({recommends:id});
                 console.log(this.state.recommends);
             }.bind(this));

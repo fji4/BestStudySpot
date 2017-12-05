@@ -27,8 +27,7 @@ import  {
     Label,
     Input
 } from 'native-base';
-// import EmojiPicker from 'react-native-simple-emoji-picker';
-// const EmojiPicker = require('react-native-simple-emoji-picker');
+import EmojiPicker from 'react-native-simple-emoji-picker';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
@@ -43,7 +42,11 @@ export default class Comment extends Component {
             place: "",
             comment: "",
             error: "",
-            user: ""
+            user: "",
+            showEmoji: false,
+            commentFocus: false,
+            likes:0,
+            subComment:[]
         };
     }
 
@@ -51,20 +54,50 @@ export default class Comment extends Component {
      * add posts to the database
      */
     addPost() {
-
-
-        // console.log(this.props.userid);
         const {currentUser} = firebase.auth();
         console.log(currentUser.uid);
-        this.setState({user:currentUser.uid});
-        const {place, comment, user} = this.state;
-        firebase.database().ref(`users/${currentUser.uid}/posts`)
-            .push({place, comment, user});
-        firebase.database().ref(`posts/`)
-            .push({place, comment, user});
-        Actions.pop();
+        this.setState({user:currentUser.uid}, () => {
+            const {place, comment, user, likes, subComment} = this.state;
+            const key = firebase.database().ref(`posts/`)
+                .push({place, comment, user, likes, subComment}).key;
+            firebase.database().ref(`users/${currentUser.uid}/posts`)
+                .push({key});
+            Actions.pop();
+        });
+
 
     }
+
+    emojiPicker() {
+        this.setState({showEmoji: !this.state.showEmoji});
+
+    }
+
+    _emojiSelected(emoji) {
+        console.log(emoji);
+        if (this.state.commentFocus) {
+            this.setState({comment: this.state.comment.concat(emoji)})
+        }
+    }
+
+    displayEmoji() {
+        if (this.state.showEmoji) {
+            return (
+                <View>
+                    <EmojiPicker onPick={emoji => {this._emojiSelected(emoji)}}/>
+                </View>
+            )
+        }
+        else{
+            return (
+                <View>
+
+                </View>
+            )
+        }
+    }
+
+
 
     render() {
         return(
@@ -75,16 +108,21 @@ export default class Comment extends Component {
                     </Item>
                     <View style={{paddingTop: 10}}>
                     <Item  >
-                        <Input multiline = {true} style={{height:500}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}/>
+                        <Input multiline = {true} style={{height:500}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}
+                               onFocus={()=> {
+                                   this.setState({commentFocus: !this.state.commentFocus})
+                               }}/>
                     </Item></View>
                 </Content>
+
+                {this.displayEmoji()}
                 <View  style={{paddingBottom:10}}>
                 <Footer>
                     <FooterTab>
                         <Button vertical>
                             <Icon name="photo" size={20}/>
                         </Button>
-                        <Button vertical>
+                        <Button vertical onPress={() => this.emojiPicker()}>
                             <Icon active name="tag-faces" size={20}/>
                         </Button>
                         <Button vertical>
