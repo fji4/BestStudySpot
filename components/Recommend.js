@@ -47,7 +47,8 @@ class RecommendListItem extends Component {
             id: this.props.recommend,
             posts: {},
             comment: "",
-            toggle: false
+            toggle: false,
+            liked: false
         };
         console.log("recommend "+this.props.recommend.comment);
     }
@@ -64,33 +65,43 @@ class RecommendListItem extends Component {
             }.bind(this));
     }
 
+    /**
+     * Plus one like every time user push the like button
+     */
     updateNewLikes() {
         // A post entry.
         var postData = {
             user: this.state.posts['user'],
             comment: this.state.posts['comment'],
             place: this.state.posts['place'],
-            likes: this.state.posts['likes'] + 1
+            likes: this.state.posts['likes'] + 1,
+            image: this.state.posts['image']
         };
 
-        // Get a key for a new Post.
-
-        // Write the new post's data simultaneously in the posts list and the user's post list.
+        // Write the new post's data simultaneously in the posts list.
         var updates = {};
         updates['/posts/' + this.state.id] = postData;
 
         firebase.database().ref().update(updates);
     }
 
+    /**
+     * Store comment data into post schema
+     */
     updateComment() {
         const {comment} = this.state;
-        const {currentUser} = firebase.auth()
+        // const {currentUser} = firebase.auth();
         firebase.database().ref(`posts/${this.state.id}/subComment`)
-            .push({comment, currentUser});
+            .push({comment});
 
         this.toggleComment();
     }
 
+    /**
+     * User can toggle on and off the comment box.
+     * Let user able to comment on others' posts.
+     * @returns {XML}
+     */
     addComment() {
         if (this.state.toggle) {
             return (
@@ -98,7 +109,7 @@ class RecommendListItem extends Component {
 
                     <Input placeholder="Comments" autoFocus={true} value={this.state.comment} onChangeText={comment => this.setState({comment})}/>
                     <Button transparent onPress={() => this.updateComment()}>
-                        <Icon active name="keyboard-arrow-right" />
+                        <Icon active name="keyboard-arrow-right" size={20}/>
                     </Button>
                 </CardItem>
             )
@@ -112,6 +123,10 @@ class RecommendListItem extends Component {
         }
     }
 
+
+    /**
+     * Help function for toggling comment box on and off.
+     */
     toggleComment() {
         this.setState({toggle: !this.state.toggle})
     }
@@ -128,19 +143,22 @@ class RecommendListItem extends Component {
                     <Text>{this.state.posts['comment']}</Text>
                     </Body>
                 </CardItem>
+                <CardItem cardBody>
+                    <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
+                </CardItem>
                 <CardItem>
                     <Left>
                         <Button transparent onPress={() => this.updateNewLikes()}>
-                            <Icon active name="thumb-up" />
+                            <Icon active name="thumb-up" size={20} color='red'/>
                             <Text>{this.state.posts['likes']} Likes</Text>
                         </Button>
                     </Left>
-                    <Body>
+                    <Right>
                     <Button transparent onPress={() => this.toggleComment()}>
-                        <Icon active name="chat-bubble" />
+                        <Icon active name="chat-bubble" size={20}/>
                         <Text>Comments</Text>
                     </Button>
-                    </Body>
+                    </Right>
                 </CardItem>
                 {this.addComment()}
             </Card>
@@ -184,8 +202,7 @@ export default class Recommend extends Component {
         this.state = {
             recommends:[]
         };
-        // this.getPost=this.getPost.bind(this);
-        // this.getPost();
+
     }
 
     /**
@@ -198,9 +215,7 @@ export default class Recommend extends Component {
                 snapshot.forEach(function(childSnapshot) {
                     id.push(childSnapshot.key)
                 });
-                // for (var i in snapshot.val()){
-                //     id.push(snapshot.val()[i]);
-                // }
+
                 this.setState({recommends:id});
                 console.log(this.state.recommends);
             }.bind(this));

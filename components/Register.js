@@ -41,7 +41,8 @@ export default class Register extends Component {
         this.state = {
             email: "",
             password: "",
-            username: ""
+            username: "",
+            avatar: "https://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/52235f06e4b0bf0a6aa8425d/1378105582329/tom-hiddleston-talks-loki-in-thor-the-dark-world-and-beyond-preview.jpg"
         };
     }
 
@@ -49,14 +50,14 @@ export default class Register extends Component {
      * firebase register auth
      */
     signInButton() {
-        const {email, password, username} = this.state;
+        const {email, password, username, avatar} = this.state;
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(function () {
                 const {currentUser} = firebase.auth();
                 console.log(currentUser.uid);
                 firebase.database().ref(`users/${currentUser.uid}`)
-                    .set({email, password, username});
+                    .set({email, password, username, avatar});
                 Actions.replace("library",{userid:currentUser.uid});
             });
 

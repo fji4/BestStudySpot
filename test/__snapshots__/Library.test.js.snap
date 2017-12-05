@@ -1,0 +1,398 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "height": 1334,
+    }
+  }
+  virtual={undefined}
+>
+  <RCTScrollView>
+    <View />
+  </RCTScrollView>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#F8F8F8",
+        "borderColor": "#cbcbcb",
+        "borderTopWidth": 0.5,
+        "elevation": 3,
+        "flexDirection": "row",
+        "height": 55,
+        "justifyContent": "center",
+        "left": 0,
+        "paddingBottom": 0,
+        "right": 0,
+      }
+    }
+    virtual={undefined}
+  >
+    <View
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": undefined,
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      virtual={undefined}
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "#cde1f9",
+            "borderBottomWidth": null,
+            "borderColor": null,
+            "borderLeftWidth": null,
+            "borderRadius": 5,
+            "borderRightWidth": null,
+            "borderTopWidth": null,
+            "elevation": 0,
+            "flex": 1,
+            "flexDirection": "column",
+            "height": null,
+            "justifyContent": "center",
+            "opacity": 1,
+            "paddingBottom": 6,
+            "paddingTop": 6,
+            "shadowColor": null,
+            "shadowOffset": null,
+            "shadowOpacity": null,
+            "shadowRadius": null,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "color": "#007aff",
+                "fontFamily": "System",
+                "fontSize": 14,
+                "lineHeight": 16,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "paddingLeft": 16,
+                "paddingRight": 16,
+              },
+              Object {
+                "fontSize": 10,
+              },
+            ]
+          }
+          uppercase={false}
+          virtual={undefined}
+        >
+          Library
+        </Text>
+      </View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "transparent",
+            "borderBottomWidth": null,
+            "borderColor": null,
+            "borderLeftWidth": null,
+            "borderRadius": 5,
+            "borderRightWidth": null,
+            "borderTopWidth": null,
+            "elevation": 0,
+            "flex": 1,
+            "flexDirection": "column",
+            "height": null,
+            "justifyContent": "center",
+            "opacity": 1,
+            "paddingBottom": 6,
+            "paddingTop": 6,
+            "shadowColor": null,
+            "shadowOffset": null,
+            "shadowOpacity": null,
+            "shadowRadius": null,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "color": "#6b6b6b",
+                "fontFamily": "System",
+                "fontSize": 14,
+                "lineHeight": 16,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "paddingLeft": 16,
+                "paddingRight": 16,
+              },
+              Object {
+                "fontSize": 10,
+              },
+            ]
+          }
+          uppercase={false}
+          virtual={undefined}
+        >
+          Recommend
+        </Text>
+      </View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "transparent",
+            "borderBottomWidth": null,
+            "borderColor": null,
+            "borderLeftWidth": null,
+            "borderRadius": 5,
+            "borderRightWidth": null,
+            "borderTopWidth": null,
+            "elevation": 0,
+            "flex": 1,
+            "flexDirection": "column",
+            "height": null,
+            "justifyContent": "center",
+            "opacity": 1,
+            "paddingBottom": 6,
+            "paddingTop": 6,
+            "shadowColor": null,
+            "shadowOffset": null,
+            "shadowOpacity": null,
+            "shadowRadius": null,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+        />
+      </View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "transparent",
+            "borderBottomWidth": null,
+            "borderColor": null,
+            "borderLeftWidth": null,
+            "borderRadius": 5,
+            "borderRightWidth": null,
+            "borderTopWidth": null,
+            "elevation": 0,
+            "flex": 1,
+            "flexDirection": "column",
+            "height": null,
+            "justifyContent": "center",
+            "opacity": 1,
+            "paddingBottom": 6,
+            "paddingTop": 6,
+            "shadowColor": null,
+            "shadowOffset": null,
+            "shadowOpacity": null,
+            "shadowRadius": null,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "color": "#6b6b6b",
+                "fontFamily": "System",
+                "fontSize": 14,
+                "lineHeight": 16,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "paddingLeft": 16,
+                "paddingRight": 16,
+              },
+              Object {
+                "fontSize": 10,
+              },
+            ]
+          }
+          uppercase={false}
+          virtual={undefined}
+        >
+          Me
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`renders the first library 1`] = `
+<RCTScrollView
+  dataSource={
+    ListViewDataSource {
+      "items": 2,
+    }
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      Grainger Engineering Library Information Center
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      1301 West Springfield Avenue
+    </Text>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`renders the second library 1`] = `
+<RCTScrollView
+  dataSource={
+    ListViewDataSource {
+      "items": 2,
+    }
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      Mathematical Library
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      1409 West Green Street
+    </Text>
+  </View>
+</RCTScrollView>
+`;

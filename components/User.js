@@ -5,7 +5,9 @@ import {
     StyleSheet,
     NavigatorIOS,
     View,
-    Image
+    Image,
+    Camera,
+    ActionSheetIOS
 } from 'react-native';
 import  {
     Container,
@@ -30,7 +32,8 @@ import  {
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
-// import PhotoUpload from 'react-native-photo-upload'
+import { ImagePicker, Permissions } from 'expo';
+import UploadImage from './UploadPhoto';
 
 /**
  * The user page
@@ -40,65 +43,149 @@ export default class User extends Component {
         super(props, context);
         this.state = {
 
-                avatar_url: "https://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/51ce6099e4b0d911b4489b79/52235f06e4b0bf0a6aa8425d/1378105582329/tom-hiddleston-talks-loki-in-thor-the-dark-world-and-beyond-preview.jpg",
+                avatar_url: "",
                 name:"",
+                user:{},
                 favorite: 2,
                 recommended: 2,
-            avatarSource:''
+            avatarSource:null,
+            image: null,
+            hasCameraPermission: null
 
         };
-        // this.userInfo();
     }
 
+    /**
+     * Let user be able to sign out and change account.
+     */
     signOut() {
         firebase.auth().signOut();
         Actions.replace("login")
 
     }
 
+    async componentWillMount() {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({ hasCameraPermission: status === 'granted' });
+    }
+
+
+    /**
+     * Read data about user from database and store in the state.
+     */
     componentDidMount() {
         const {currentUser} = firebase.auth();
         firebase.database().ref(`users/${currentUser.uid}`)
             .on('value', function(snapshot) {
                 console.log(snapshot.val().username);
                 let nickname = snapshot.val().username;
-            this.setState({name: nickname});
+                let image_url = snapshot.val().avatar;
+            this.setState({
+                name: nickname,
+                avatar_url: image_url,
+                user: snapshot.val()
+            });
             console.log(this.state.name);
 
         }.bind(this));
     }
 
-    uploadPhoto() {
-        return (
-            <PhotoUpload
-                onPhotoSelect={avatar => {
-     if (avatar) {
-       console.log('Image base64 string: ', avatar)
-     }
-   }}
-            >
-                <Image
-                    style={{
-       paddingVertical: 30,
-       width: 150,
-       height: 150,
-       borderRadius: 75
-     }}
-                    resizeMode='cover'
-                    source={{
-       uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-     }}
-                />
-            </PhotoUpload>
-        )
+    /**
+     * Render a picker for user to choose image from camera roll and save it into database
+     * @returns {Promise.<void>}
+     * @private
+     */
+    _pickImage = async () => {
+        const {currentUser} = firebase.auth();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            this.setState({ avatar_url: result.uri }, () => {
+                var userData = {
+                    email: this.state.user.email,
+                    avatar: this.state.avatar_url,
+                    password: this.state.user.password,
+                    username: this.state.user.username
+                };
+
+
+                // Write the new user's data simultaneously in the user schema.
+                var updates = {};
+                updates['/users/' + currentUser.uid] = userData;
+
+                firebase.database().ref().update(updates);
+            });
+        }
+    };
+
+    /**
+     * Display the system UI for taking a photo with the camera and save the image into database.
+     * @returns {Promise.<void>}
+     * @private
+     */
+    _takeImage = async () => {
+        const {currentUser} = firebase.auth();
+
+        let iresult = await ImagePicker.launchCameraAsync();
+
+        console.log(iresult);
+
+        if (!iresult.cancelled) {
+            this.setState({ avatar_url: iresult.uri }, () => {
+                var userData = {
+                    email: this.state.user.email,
+                    avatar: this.state.avatar_url,
+                    password: this.state.user.password,
+                    username: this.state.user.username
+                };
+
+
+                // Write the new user's data simultaneously in the user schema.
+                var updates = {};
+                updates['/users/' + currentUser.uid] = userData;
+
+                firebase.database().ref().update(updates);
+            });
+        }
+    };
+
+    /**
+     * Render an actionsheet to let the user choose whether take photo or choose photo from camera roll
+     */
+    displayActionSheet() {
+        ActionSheetIOS.showActionSheetWithOptions({
+                options: ['Take Photo','Choose from Library', 'Cancel'],
+                destructiveButtonIndex: 2,
+                cancelButtonIndex: 2,
+            },
+            (buttonIndex) => {
+                if (buttonIndex === 1) {
+                    this._pickImage()
+                }
+                if (buttonIndex === 2) {
+
+                        this._takeImage();
+
+                        console.log("failed");
+
+
+                }
+                });
     }
+
 
     render() {
         return(
             <Container>
                 <Content>
                     <List>
-                        <ListItem>
+                        <ListItem onPress={()=>this._pickImage()}>
                             <View style={styles.centralize}>
                                 <Thumbnail large source={{url:this.state.avatar_url}} />
                             </View>
@@ -129,12 +216,11 @@ export default class User extends Component {
 
                     </List>
                     <View style={{paddingTop: 50}}>
-                    <Button block info onPress={() => this.signOut()}>
-                        <Text> Sign Out </Text>
-                    </Button>
+                        <Button block info onPress={() => this.signOut()}>
+                            <Text> Sign Out </Text>
+                        </Button>
                     </View>
 
-                    {/*{this.uploadPhoto()}*/}
 
                 </Content>
                 <Footer>

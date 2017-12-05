@@ -31,6 +31,10 @@ import EmojiPicker from 'react-native-simple-emoji-picker';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
+import Geocoder from 'react-native-geocoding';
+import { ImagePicker, Permissions } from 'expo';
+
+Geocoder.setApiKey('AIzaSyDE9vHZRqDgv8BhmvchDJrPKPjaIBChb_8');
 
 /**
  * The add comment page
@@ -41,15 +45,56 @@ export default class Comment extends Component {
         this.state = {
             place: "",
             comment: "",
-            error: "",
+            error: null,
             user: "",
             showEmoji: false,
             commentFocus: false,
             likes:0,
-            subComment:[]
+            latitude: null,
+            longitude: null,
+            image: "",
+            id:""
         };
     }
 
+    /**
+     * Get current location with google api and decode the lat and lng into real address.
+     */
+    getCurrentPosition(){
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    error: null,
+                }, () => {
+                    const current = {
+                        lat: this.state.latitude,
+                        lng: this.state.longitude
+                    };
+                    console.log(current.lat);
+                    console.log(current.lng);
+                    Geocoder.getFromLatLng(current.lat, current.lng).then(
+                        json => {
+                            var address_component = json.results[0].formatted_address;
+                            console.log(address_component);
+                            this.setState({place: address_component})
+                        },
+                        error => {
+                            alert(error);
+                        }
+                    );
+                });
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+    }
+
+    displayCurrentLocation() {
+        this.getCurrentPosition();
+
+    }
     /**
      * add posts to the database
      */
@@ -57,22 +102,31 @@ export default class Comment extends Component {
         const {currentUser} = firebase.auth();
         console.log(currentUser.uid);
         this.setState({user:currentUser.uid}, () => {
-            const {place, comment, user, likes, subComment} = this.state;
+            const {place, comment, user, likes, image} = this.state;
             const key = firebase.database().ref(`posts/`)
-                .push({place, comment, user, likes, subComment}).key;
+                .push({place, comment, user, likes, image}).key;
             firebase.database().ref(`users/${currentUser.uid}/posts`)
                 .push({key});
+            this.setState({id:key});
             Actions.pop();
         });
 
 
     }
 
+    /**
+     * Toggle the emoji keyboard on and off.
+     */
     emojiPicker() {
         this.setState({showEmoji: !this.state.showEmoji});
 
     }
 
+    /**
+     * Select emoji and add it to comment.
+     * @param emoji
+     * @private
+     */
     _emojiSelected(emoji) {
         console.log(emoji);
         if (this.state.commentFocus) {
@@ -80,6 +134,10 @@ export default class Comment extends Component {
         }
     }
 
+    /**
+     * Display emoji keyboard
+     * @returns {XML}
+     */
     displayEmoji() {
         if (this.state.showEmoji) {
             return (
@@ -98,6 +156,25 @@ export default class Comment extends Component {
     }
 
 
+    /**
+     * Display the system UI for choosing an image or a video from the phone’s library.
+     * @returns {Promise.<void>}
+     * @private
+     */
+    _pickImage = async () => {
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            this.setState({ image: result.uri });
+        }
+    };
+
 
     render() {
         return(
@@ -108,24 +185,28 @@ export default class Comment extends Component {
                     </Item>
                     <View style={{paddingTop: 10}}>
                     <Item  >
-                        <Input multiline = {true} style={{height:500}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}
+                        <Input multiline = {true} style={{height:330}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}
                                onFocus={()=> {
                                    this.setState({commentFocus: !this.state.commentFocus})
                                }}/>
-                    </Item></View>
+                    </Item>
+                    <Item>
+                        <Thumbnail large square source={{url: this.state.image}} />
+                    </Item>
+                    </View>
                 </Content>
 
                 {this.displayEmoji()}
                 <View  style={{paddingBottom:10}}>
                 <Footer>
                     <FooterTab>
-                        <Button vertical>
+                        <Button vertical onPress={() => this._pickImage()}>
                             <Icon name="photo" size={20}/>
                         </Button>
                         <Button vertical onPress={() => this.emojiPicker()}>
                             <Icon active name="tag-faces" size={20}/>
                         </Button>
-                        <Button vertical>
+                        <Button vertical onPress={() => this.displayCurrentLocation()}>
                             <Icon active name="location-on" size={20}/>
                         </Button>
                     </FooterTab>

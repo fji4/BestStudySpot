@@ -1,0 +1,22 @@
+dependencies: \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Modules/RCTDevSettings.mm \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Modules/RCTDevSettings.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/aliceji/cs242/final/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JavaScriptCore.h \
+  /Users/aliceji/cs242/final/ios/build/Build/Products/Debug-iphonesimulator/include/jschelpers/JSCWrapper.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTBridge+Private.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Modules/RCTJSCSamplingProfiler.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTJSEnvironment.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/Profiler/RCTProfile.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/DevSupport/RCTPackagerConnection.h \
+  /Users/aliceji/cs242/final/node_modules/react-native/React/DevSupport/RCTInspectorDevServerHelper.h
