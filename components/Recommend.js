@@ -36,7 +36,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
 
-
+/**
+ * Render the list user commented on the post
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
 const CommentList = props => {
     const commentItems = props.comments.map(comment => {
         return (
@@ -55,7 +60,12 @@ const CommentList = props => {
 };
 
 
-
+/**
+ * Render every comment the user commented on the post
+ * @param comment
+ * @returns {XML}
+ * @constructor
+ */
 const CommentListItem = ({comment}) => {
 
     return(
@@ -95,6 +105,9 @@ class RecommendListItem extends Component {
                 this.setState({posts:snapshot.val()});
             }.bind(this));
 
+        /**
+         * Get all the sub comment for the post
+         */
         firebase.database().ref(`posts/${this.state.id}/subComment`)
             .on('value', function (snapshot) {
                 var comment = snapshot.val();
@@ -121,6 +134,9 @@ class RecommendListItem extends Component {
 
         const {currentUser} = firebase.auth();
 
+        /**
+         * Check the post is favorited by the user or not
+         */
         firebase.database().ref(`posts/${this.state.id}/favorite`)
             .on('value', function (snapshot) {
                 console.log(snapshot.val());
@@ -239,6 +255,10 @@ class RecommendListItem extends Component {
         }
     }
 
+    /**
+     * Toggle the favorite on and off.
+     * Update in the database.
+     */
     setFavorite() {
         if (this.state.favorite) {
             this.setState({favorite: false});
@@ -253,7 +273,7 @@ class RecommendListItem extends Component {
                         var commentArray=[]
                         for (var key in favid) {
                             // skip loop if the property is from prototype
-                            if (!fav.hasOwnProperty(key)) continue;
+                            if (!favid.hasOwnProperty(key)) continue;
 
                             var obj = favid[key];
                             console.log("fav" );;
@@ -289,26 +309,45 @@ class RecommendListItem extends Component {
         }
     }
 
+    /**
+     * Checking the image exist in the post or not.
+     * If yes display.
+     * If not, not display it.
+     * @returns {XML}
+     */
+    renderImage() {
+        if (this.state.posts['image']) {
+            return (
+                <CardItem cardBody>
+                    <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
+                </CardItem>
+            )
+        }
+        else{
+            return(
+                <View>
+
+                </View>
+            )
+        }
+    }
+
 
     render() {
         return(
             <Card >
-
-
                 <CardItem>
-                    <Left>
-                    {/*<Body ref="myRef">*/}
+                    {/*<Left>*/}
+                    <Body ref="myRef">
                     <Text style={{fontSize: 18}}>{this.state.posts['place']}</Text>
-                    {/*</Body>*/}
-                    </Left>
+                    </Body>
+                    {/*</Left>*/}
                     {this.toggleFavorite()}
                 </CardItem>
                 <CardItem>
                     <Text>{this.state.posts['comment']}</Text>
                 </CardItem>
-                <CardItem cardBody>
-                    <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
-                </CardItem>
+                {this.renderImage()}
                 <CardItem>
                     <Left>
                         <Button transparent onPress={() => this.updateNewLikes()}>

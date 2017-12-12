@@ -36,6 +36,49 @@ import  {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
+
+/**
+ * Render the Library hour list
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
+const HourList = props => {
+    const hourItems = props.hours.map(hour => {
+        return (
+            <HourListItem
+                key = {hour.date}
+                hour={hour}
+            />
+        );
+    });
+
+    return (
+        <View>
+            {hourItems}
+        </View>
+    );
+};
+
+
+/**
+ * Render each day hour for library
+ * @param hour
+ * @returns {XML}
+ * @constructor
+ */
+const HourListItem = ({hour}) => {
+
+    return(
+        <CardItem>
+            <Text style={{fontWeight: "bold"}}>{`${hour.day}:  `}</Text>
+            <Right>
+                <Text>{hour.hours[0].label}</Text>
+            </Right>
+        </CardItem>
+    );
+};
+
 /**
  * Individual library Card Item
  */
@@ -43,7 +86,9 @@ class LibraryListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            library: {}
+            library: {},
+            calendar:[],
+            toggle: false
         };
 
         this.get_library();
@@ -59,10 +104,42 @@ class LibraryListItem extends Component {
             .then(function (response) {
                 // console.log(response.data);
                 this.setState({
-                    library:response.data[0]
+                    library:response.data[0],
+                    calendar: response.data[0].calendar.nextSevenDays
                 });
         }.bind(this));
     }
+
+    /**
+     * Detect should the hour be displayed or not
+     * @returns {XML}
+     */
+    displayHour() {
+        if (this.state.toggle) {
+            return (
+                <View>
+                    <HourList hours={this.state.calendar}/>
+                </View>
+            )
+        }
+        else {
+            return (
+                <View>
+
+                </View>
+            )
+        }
+    }
+
+    /**
+     * Toggle the display of hour list or not
+     */
+    toggleHour () {
+        console.log("clicked")
+        this.setState({toggle: !this.state.toggle})
+    }
+
+
 
 
 
@@ -86,6 +163,18 @@ class LibraryListItem extends Component {
                     <Text>{this.state.library['description']}</Text>
                     </Body>
                 </CardItem>
+                <CardItem >
+                    <Text>Library Hours</Text>
+                    <Right>
+                        <Button transparent onPress={() => this.toggleHour()}>
+                            <Icon name="arrow-drop-down" size={20}/>
+
+                        </Button>
+                    </Right>
+                </CardItem>
+
+                {this.displayHour()}
+
             </Card>
         )
     }

@@ -36,7 +36,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 
 
-
+/**
+ * The sub comment list for the post
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
 const SubcommentList = props => {
     const subcommentItems = props.subcomments.map(subcomment => {
         return (
@@ -55,7 +60,12 @@ const SubcommentList = props => {
 };
 
 
-
+/**
+ * Each sub comment for the post
+ * @param subcomment
+ * @returns {XML}
+ * @constructor
+ */
 const SubcommentListItem = ({subcomment}) => {
 
     return(
@@ -188,6 +198,22 @@ class RecommendListItem extends Component {
         this.setState({toggle: !this.state.toggle})
     }
 
+    renderImage() {
+        if (this.state.posts['image']) {
+            return (
+                <CardItem cardBody>
+                    <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
+                </CardItem>
+            )
+        }
+        else{
+            return(
+                <View>
+
+                </View>
+            )
+        }
+    }
 
     render() {
         return(
@@ -198,9 +224,7 @@ class RecommendListItem extends Component {
                     <Text>{this.state.posts['comment']}</Text>
                     </Body>
                 </CardItem>
-                <CardItem cardBody>
-                    <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
-                </CardItem>
+                {this.renderImage()}
                 <CardItem>
                     <Left>
                         <Button transparent onPress={() => this.updateNewLikes()}>
@@ -246,7 +270,7 @@ const RecommendList = props => {
 
 
 /**
- * The recommendation page
+ * The Comment user posted page
  */
 export default class CommentList extends Component {
     constructor(props, context) {

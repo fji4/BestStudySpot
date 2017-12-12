@@ -5,7 +5,10 @@ import {
     StyleSheet,
     NavigatorIOS,
     View,
-    Image
+    Image,
+    KeyboardAvoidingView,
+    Animated,
+    Keyboard
 } from 'react-native';
 
 import  {
@@ -43,6 +46,8 @@ export default class Login extends Component {
             password: "",
             error: ""
         };
+        this.keyboardHeight = new Animated.Value(0);
+        this.imageHeight = new Animated.Value(100);
     }
 
     /**
@@ -65,13 +70,49 @@ export default class Login extends Component {
 
     }
 
+    componentWillMount () {
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+    }
+
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove();
+        this.keyboardWillHideSub.remove();
+    }
+
+    keyboardWillShow = (event) => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: event.endCoordinates.height,
+            }),
+            Animated.timing(this.imageHeight, {
+                duration: event.duration,
+                toValue: 50,
+            }),
+        ]).start();
+    };
+
+    keyboardWillHide = (event) => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: 0,
+            }),
+            Animated.timing(this.imageHeight, {
+                duration: event.duration,
+                toValue: 100,
+            }),
+        ]).start();
+    };
+
 
 
     render() {
         return(
 
         <Image style={styles.background} source={require('../assets/grainger.png')}>
-
+            <Animated.View style={{ paddingBottom: this.keyboardHeight }}>
             <Text style={styles.header}>Best Study Spot</Text>
 
                 <Form style={styles.centralize}>
@@ -98,6 +139,7 @@ export default class Login extends Component {
 
 
             </View>
+            </Animated.View>
 
         </Image>
     )}

@@ -24,6 +24,7 @@
   "dependencies": {
     "@expo/vector-icons": "^6.2.0",
     "axios": "^0.17.1",
+    "base64-js": "^1.2.1",
     "expo": "^22.0.4",
     "firebase": "^4.6.2",
     "mdi": "^2.0.46",

@@ -5,7 +5,9 @@ import {
     StyleSheet,
     NavigatorIOS,
     View,
-    Image
+    Image,
+    ScrollView,
+    KeyboardAvoidingView
 } from 'react-native';
 import  {
     Container,
@@ -178,14 +180,14 @@ export default class Comment extends Component {
 
     render() {
         return(
-            <Container>
-                <Content style={{backgroundColor:"#FFFFFF"}}>
+            <ScrollView>
+                <ScrollView style={{backgroundColor:"#FFFFFF"}}>
                     <Item >
-                        <Input placeholder='Place' autoFocus={true} value={this.state.place} onChangeText={place => this.setState({place})}/>
+                        <Input placeholder='Place' value={this.state.place} onChangeText={place => this.setState({place})}/>
                     </Item>
                     <View style={{paddingTop: 10}}>
                     <Item  >
-                        <Input multiline = {true} style={{height:330}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}
+                        <Input multiline = {true} style={{height:150}} placeholder='Comment...' value={this.state.comment} onChangeText={comment => this.setState({comment})}
                                onFocus={()=> {
                                    this.setState({commentFocus: !this.state.commentFocus})
                                }}/>
@@ -194,7 +196,7 @@ export default class Comment extends Component {
                         <Thumbnail large square source={{url: this.state.image}} />
                     </Item>
                     </View>
-                </Content>
+                </ScrollView>
 
                 {this.displayEmoji()}
                 <View  style={{paddingBottom:10}}>
@@ -222,6 +224,6 @@ export default class Comment extends Component {
                         </Button>
                     </FooterTab>
                 </Footer>
-            </Container>
+            </ScrollView>
         )}
 }
