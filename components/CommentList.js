@@ -248,7 +248,7 @@ const RecommendList = props => {
 /**
  * The recommendation page
  */
-export default class Favorite extends Component {
+export default class CommentList extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -262,7 +262,7 @@ export default class Favorite extends Component {
      */
     componentDidMount() {
         const {currentUser} = firebase.auth();
-        firebase.database().ref(`users/${currentUser.uid}/favorite`)
+        firebase.database().ref(`users/${currentUser.uid}/posts`)
             .on('value', function(snapshot) {
                 var posts = snapshot.val();
                 var id=[];

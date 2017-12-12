@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the first post 1`] = `
+<RCTScrollView
+  dataSource={
+    ListViewDataSource {
+      "items": 3,
+    }
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      Grainger
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      It’s best for study😘
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+    >
+      file:///Users/aliceji/Library/Developer/CoreSimulator/Devices/498AB8E3-943B-432B-B58A-2C3DEB0FCDEA/data/Containers/Data/Application/6C958905-F2CC-4368-ACF0-53D46B5F7A5E/Library/Caches/ExponentExperienceData/%2540anonymous%252Ffinal-1c4dc687-1d29-47f0-a8c0-079b2613742d/ImagePicker/91EE1FD1-A18F-443D-8958-25221E93FCF5.jpg
+    </Text>
+  </View>
+</RCTScrollView>
+`;

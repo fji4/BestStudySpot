@@ -195,7 +195,7 @@ export default class User extends Component {
                         </ListItem>
 
 
-                        <ListItem>
+                        <ListItem onPress={() => Actions.favorite()}>
                             <Left>
                                 <Text>Favorite</Text>
                             </Left>
@@ -204,7 +204,7 @@ export default class User extends Component {
                             </Right>
                         </ListItem>
 
-                        <ListItem>
+                        <ListItem onPress={() => Actions.commentlist()}>
                             <Left>
                                 <Text>Recommended</Text>
                             </Left>

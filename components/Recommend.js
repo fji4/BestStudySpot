@@ -37,6 +37,34 @@ import {Actions} from 'react-native-router-flux';
 
 
 
+const CommentList = props => {
+    const commentItems = props.comments.map(comment => {
+        return (
+            <CommentListItem
+                key = {comment}
+                comment={comment}
+            />
+        );
+    });
+
+    return (
+        <View>
+            {commentItems}
+        </View>
+    );
+};
+
+
+
+const CommentListItem = ({comment}) => {
+
+    return(
+        <CardItem>
+            <Text>{comment}</Text>
+        </CardItem>
+    );
+};
+
 /**
  * One post Item
  */
@@ -48,7 +76,10 @@ class RecommendListItem extends Component {
             posts: {},
             comment: "",
             toggle: false,
-            liked: false
+            liked: false,
+            subcomment: [],
+            favorite: false,
+            favid: ""
         };
         console.log("recommend "+this.props.recommend.comment);
     }
@@ -58,11 +89,69 @@ class RecommendListItem extends Component {
      * set state for posts
      */
 
-    componentDidMount() {
+    componentWillMount() {
         firebase.database().ref(`posts/${this.state.id}`)
             .on('value', function(snapshot) {
                 this.setState({posts:snapshot.val()});
             }.bind(this));
+
+        firebase.database().ref(`posts/${this.state.id}/subComment`)
+            .on('value', function (snapshot) {
+                var comment = snapshot.val();
+                var commentArray=[]
+                for (var key in comment) {
+                    // skip loop if the property is from prototype
+                    if (!comment.hasOwnProperty(key)) continue;
+
+                    var obj = comment[key];
+                    for (var prop in obj) {
+                        // skip loop if the property is from prototype
+                        if(!obj.hasOwnProperty(prop)) continue;
+
+                        commentArray.push(obj[prop]);
+
+                    }
+                }
+                this.setState({
+                    subcomment: commentArray
+                });
+
+
+            }.bind(this));
+
+        const {currentUser} = firebase.auth();
+
+        firebase.database().ref(`posts/${this.state.id}/favorite`)
+            .on('value', function (snapshot) {
+                console.log(snapshot.val());
+                if (snapshot.val()) {
+                    var fav = snapshot.val();
+                    var commentArray=[]
+                    for (var key in fav) {
+                        // skip loop if the property is from prototype
+                        if (!fav.hasOwnProperty(key)) continue;
+
+                        var obj = fav[key];
+                        console.log("fav" );;
+                        console.log(obj);
+                        for (var prop in obj) {
+                            // skip loop if the property is from prototype
+                            if(!obj.hasOwnProperty(prop)) continue;
+                            if (obj[prop] == currentUser.uid) {
+                                this.setState({favorite: true, favid: key}, function () {
+                                    console.log("favorite");
+                                    console.log(this.state.favid);
+                                });
+                            }
+
+                        }
+                    }
+
+                }
+
+
+            }.bind(this));
+
     }
 
     /**
@@ -93,7 +182,7 @@ class RecommendListItem extends Component {
         // const {currentUser} = firebase.auth();
         firebase.database().ref(`posts/${this.state.id}/subComment`)
             .push({comment});
-
+        this.setState({comment:""});
         this.toggleComment();
     }
 
@@ -105,13 +194,15 @@ class RecommendListItem extends Component {
     addComment() {
         if (this.state.toggle) {
             return (
-                <CardItem>
-
-                    <Input placeholder="Comments" autoFocus={true} value={this.state.comment} onChangeText={comment => this.setState({comment})}/>
+                <View>
+                    <CommentList comments={this.state.subcomment}/>
+                    <CardItem>
+                    <Input placeholder="Comments" value={this.state.comment} onChangeText={comment => this.setState({comment})}/>
                     <Button transparent onPress={() => this.updateComment()}>
                         <Icon active name="keyboard-arrow-right" size={20}/>
                     </Button>
-                </CardItem>
+                    </CardItem>
+                </View>
             )
         }
         else{
@@ -131,17 +222,89 @@ class RecommendListItem extends Component {
         this.setState({toggle: !this.state.toggle})
     }
 
+    toggleFavorite() {
+        if (this.state.favorite) {
+            return (
+                <Right>
+                    <Icon name="star" size={20} onPress={() => this.setFavorite()}/>
+                </Right>
+            )
+        }
+        else {
+            return (
+                <Right>
+                    <Icon name="star-border" size={20} onPress={() => this.setFavorite()}/>
+                </Right>
+            )
+        }
+    }
+
+    setFavorite() {
+        if (this.state.favorite) {
+            this.setState({favorite: false});
+            firebase.database().ref(`posts/${this.state.id}/favorite`).child(this.state.favid)
+                .remove();
+            const {currentUser} = firebase.auth();
+            var userfavid="";
+            firebase.database().ref(`users/${currentUser.uid}/favorite`)
+                .on('value', function (snapshot) {
+                    if (snapshot.val()) {
+                        var favid = snapshot.val();
+                        var commentArray=[]
+                        for (var key in favid) {
+                            // skip loop if the property is from prototype
+                            if (!fav.hasOwnProperty(key)) continue;
+
+                            var obj = favid[key];
+                            console.log("fav" );;
+                            console.log(obj);
+                            for (var prop in obj) {
+                                // skip loop if the property is from prototype
+                                if(!obj.hasOwnProperty(prop)) continue;
+                                if (obj[prop] == this.state.id) {
+                                    favid = key;
+                                }
+
+                            }
+                        }
+
+                        firebase.database().ref(`users/${currentUser.uid}/favorite`).child(favid)
+                            .remove();
+
+                    }
+
+
+                }.bind(this));
+
+        }
+        else{
+            this.setState({favorite: true});
+            const {currentUser} = firebase.auth();
+            const uid = currentUser.uid;
+            const {id} =this.state;
+            firebase.database().ref(`posts/${this.state.id}/favorite`)
+                .push({uid});
+            firebase.database().ref(`users/${currentUser.uid}/favorite`)
+                .push({id});
+        }
+    }
+
 
     render() {
         return(
-            <Card style={{flex: 0}} >
+            <Card >
 
 
                 <CardItem>
-                    <Body ref="myRef">
-                    <Text style={{fontSize: 20}}>{this.state.posts['place']}</Text>
+                    <Left>
+                    {/*<Body ref="myRef">*/}
+                    <Text style={{fontSize: 18}}>{this.state.posts['place']}</Text>
+                    {/*</Body>*/}
+                    </Left>
+                    {this.toggleFavorite()}
+                </CardItem>
+                <CardItem>
                     <Text>{this.state.posts['comment']}</Text>
-                    </Body>
                 </CardItem>
                 <CardItem cardBody>
                     <Image source={{uri: this.state.posts['image']}} style={{height: 200, width: null, flex: 1}}/>
@@ -176,7 +339,7 @@ const RecommendList = props => {
     const RecommendItems = props.recommends.map(recommend => {
         return (
             <RecommendListItem
-                key = {recommend['user']}
+                key = {recommend}
                 recommend={recommend}
             />
         );
@@ -188,9 +351,6 @@ const RecommendList = props => {
         </ScrollView>
     );
 };
-
-
-
 
 
 /**

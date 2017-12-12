@@ -16,6 +16,8 @@ import Comment from './components/Comment';
 import Recommend from './components/Recommend';
 import User from './components/User';
 import Webview from './components/Webview';
+import CommentList from './components/CommentList';
+import Favorite from './components/Favorite';
 
 /**
  * The Navigation setup for the whole app.
@@ -42,6 +44,8 @@ export default class App extends React.Component {
                 <Scene key="recommend" component={Recommend} title="Recommend"/>
                 <Scene key="user" component={User}/>
                 <Scene key="webview" component={Webview}/>
+                <Scene key="commentlist" component={CommentList} title="Recommend"/>
+                <Scene key="favorite" component={Favorite} title="Favorite"/>
             </Stack>
 
         </Router>
