@@ -234,7 +234,7 @@ class RecommendListItem extends Component {
                     </Left>
                     <Right>
                         <Button transparent onPress={() => this.toggleComment()}>
-                            <Icon active name="chat-bubble" size={20}/>
+                            <Icon active name="chat-bubble" size={20} color="#ea841f"/>
                             <Text>Comments</Text>
                         </Button>
                     </Right>

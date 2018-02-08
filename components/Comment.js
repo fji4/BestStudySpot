@@ -203,23 +203,23 @@ export default class Comment extends Component {
                 <Footer>
                     <FooterTab>
                         <Button vertical onPress={() => this._pickImage()}>
-                            <Icon name="photo" size={20}/>
+                            <Icon name="photo" size={20} color="#7cc5f4"/>
                         </Button>
                         <Button vertical onPress={() => this.emojiPicker()}>
-                            <Icon active name="tag-faces" size={20}/>
+                            <Icon active name="tag-faces" size={20} color="#efb311"/>
                         </Button>
                         <Button vertical onPress={() => this.displayCurrentLocation()}>
-                            <Icon active name="location-on" size={20}/>
+                            <Icon active name="location-on" size={20} color="#154ed0"/>
                         </Button>
                     </FooterTab>
                 </Footer></View>
             <Footer>
                     <FooterTab>
-                        <Button vertical onPress={() => Actions.pop()}>
+                        <Button vertical onPress={() => Actions.pop()} danger transparent>
                             <Text style={{fontSize: 15}}>Cancel</Text>
                         </Button>
 
-                        <Button vertical onPress={() => this.addPost()}>
+                        <Button vertical onPress={() => this.addPost()} success transparent>
                             <Text style={{fontSize: 15}}>Send</Text>
                         </Button>
                     </FooterTab>

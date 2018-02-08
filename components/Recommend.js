@@ -238,18 +238,22 @@ class RecommendListItem extends Component {
         this.setState({toggle: !this.state.toggle})
     }
 
+    /**
+     * Toggle the favorite icon on and off.
+     * @returns {XML}
+     */
     toggleFavorite() {
         if (this.state.favorite) {
             return (
                 <Right>
-                    <Icon name="star" size={20} onPress={() => this.setFavorite()}/>
+                    <Icon name="star" size={20} onPress={() => this.setFavorite()} color="#f79c0b"/>
                 </Right>
             )
         }
         else {
             return (
                 <Right>
-                    <Icon name="star-border" size={20} onPress={() => this.setFavorite()}/>
+                    <Icon name="star-border" size={20} onPress={() => this.setFavorite()} color="#f79c0b"/>
                 </Right>
             )
         }
@@ -265,19 +269,15 @@ class RecommendListItem extends Component {
             firebase.database().ref(`posts/${this.state.id}/favorite`).child(this.state.favid)
                 .remove();
             const {currentUser} = firebase.auth();
-            var userfavid="";
             firebase.database().ref(`users/${currentUser.uid}/favorite`)
                 .on('value', function (snapshot) {
                     if (snapshot.val()) {
                         var favid = snapshot.val();
-                        var commentArray=[]
                         for (var key in favid) {
                             // skip loop if the property is from prototype
                             if (!favid.hasOwnProperty(key)) continue;
 
                             var obj = favid[key];
-                            console.log("fav" );;
-                            console.log(obj);
                             for (var prop in obj) {
                                 // skip loop if the property is from prototype
                                 if(!obj.hasOwnProperty(prop)) continue;
@@ -357,7 +357,7 @@ class RecommendListItem extends Component {
                     </Left>
                     <Right>
                     <Button transparent onPress={() => this.toggleComment()}>
-                        <Icon active name="chat-bubble" size={20}/>
+                        <Icon active name="chat-bubble" size={20} color="#ea841f"/>
                         <Text>Comments</Text>
                     </Button>
                     </Right>
@@ -427,7 +427,7 @@ export default class Recommend extends Component {
                 <Footer>
                     <FooterTab>
                         <Button vertical onPress={() => Actions.replace("library")}>
-                            <Icon name="local-library" size={30} />
+                            <Icon name="local-library" size={30} color="#d1d111"/>
                             <Text style={{fontSize: 10}}>Library</Text>
                         </Button>
                         <Button vertical active>
@@ -435,10 +435,10 @@ export default class Recommend extends Component {
                             <Text style={{fontSize: 10}}>Recommend</Text>
                         </Button>
                         <Button vertical onPress={() => Actions.comment()}>
-                            <Icon active name="add-circle-outline" size={30}/>
+                            <Icon active name="add-circle-outline" size={30} color="#f55486"/>
                         </Button>
                         <Button vertical onPress={() => Actions.replace("user")}>
-                            <Icon name="person" size={30}/>
+                            <Icon name="person" size={30} color="#7cc5f4"/>
                             <Text style={{fontSize: 10}}>Me</Text>
                         </Button>
                     </FooterTab>

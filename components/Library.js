@@ -167,7 +167,7 @@ class LibraryListItem extends Component {
                     <Text>Library Hours</Text>
                     <Right>
                         <Button transparent onPress={() => this.toggleHour()}>
-                            <Icon name="arrow-drop-down" size={20}/>
+                            <Icon name="arrow-drop-down" size={30} color="#7cc5f4"/>
 
                         </Button>
                     </Right>
@@ -239,18 +239,18 @@ export default class Library extends Component {
                 <Footer>
                     <FooterTab>
                         <Button vertical active>
-                            <Icon name="local-library" size={30} />
+                            <Icon name="local-library" size={30} color="#d1d111"/>
                             <Text style={{fontSize: 10}}>Library</Text>
                         </Button>
                         <Button vertical onPress={() => Actions.replace("recommend")}>
-                            <Icon name="comment" size={30}/>
+                            <Icon name="comment" size={30} color="#ea841f"/>
                             <Text style={{fontSize: 10}}>Recommend</Text>
                         </Button>
                         <Button vertical onPress={() => Actions.comment()}>
-                            <Icon active name="add-circle-outline" size={30}/>
+                            <Icon active name="add-circle-outline" size={30} color="#f55486"/>
                         </Button>
                         <Button vertical onPress={() => Actions.replace("user")}>
-                            <Icon name="person" size={30}/>
+                            <Icon name="person" size={30} color="#7cc5f4"/>
                             <Text style={{fontSize: 10}}>Me</Text>
                         </Button>
                     </FooterTab>
